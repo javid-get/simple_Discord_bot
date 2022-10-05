@@ -31,6 +31,7 @@ public class MainGameModule : BaseCommandModule {
     }
   }
 
+  // This property is set via dependency injection in MainAsync()
   public GameDictionary? GameDict { private get; set; }
 
   /** <summary>
@@ -108,6 +109,7 @@ public class MainGameModule : BaseCommandModule {
     var msg = ctx.Member.SendMessageAsync(getPlayerWindow(host, ctx.Member));
   }
 
+  // helper method for printing a game's board into a message\window
   private DiscordMessageBuilder getPlayerWindow(DiscordMember host, DiscordMember player) {
     MainGameAdapter game = GameDict![host.Id]!;
     string windowStr = $"```\n{game.printBoard()}\n```";

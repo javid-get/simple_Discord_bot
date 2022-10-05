@@ -4,6 +4,6 @@ namespace Games {
   public enum GameType : byte {
     Main,
     Chess
-    // (other game would be listed here had there been more)
+    // (other games would be listed here had there been more)
   }
 }
