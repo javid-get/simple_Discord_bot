@@ -8,10 +8,20 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 
+/*
 
+  This program is a Discord bot.
+
+  The Discord bot, when running, allows users to join a game together.
+
+  The game is very simple; it allows players to move a character around a 2D grid.
+
+*/
 
 namespace simple_Discord_bot {
+
   internal class Program {
+
     static void Main(string[] args) {
       MainAsync().GetAwaiter().GetResult();
     }
