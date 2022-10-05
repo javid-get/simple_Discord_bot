@@ -1,5 +1,8 @@
 namespace Games.Main;
 
+/** <summary>
+  Represents the 2D grid the players move on.
+</summary> */
 public class Board {
   private Tile[,] table;
   public Board(int rowRank, int columnRank) {

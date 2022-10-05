@@ -2,6 +2,10 @@ namespace simple_Discord_bot;
 using System.Collections.Generic;
 using DSharpPlus.Entities;
 
+/** <summary>
+  Holds game state and has keeps track of the host of the game.
+  Basically has Discord-related functionality in addition to keeping track of game state.
+</summary> */
 public class MainGameAdapter {
   public string ownerName;
   private Games.Main.Game game;

@@ -33,6 +33,9 @@ public class MainGameModule : BaseCommandModule {
 
   public GameDictionary? GameDict { private get; set; }
 
+  /** <summary>
+    Creates a new game for the user that used the command.
+  </summary> */
   [Command("new-game")]
   public async Task NewGame(CommandContext ctx) {
     // guard
@@ -45,6 +48,9 @@ public class MainGameModule : BaseCommandModule {
     await ctx.RespondAsync($"Made new game for __{ctx.Member.DisplayName}__.");
   }
 
+  /** <summary>
+    Opens a window to see the host's game.
+  </summary> */
   [Command("show-game")]
   public async Task ShowGame(CommandContext ctx, DiscordMember host) {
     // guard
@@ -71,6 +77,9 @@ public class MainGameModule : BaseCommandModule {
   }
 
 
+  /** <summary>
+    The user joins the host's game and is sent a private message with a window to view the game.
+  </summary> */
   [Command("join-game")]
   public async Task JoinGame(CommandContext ctx, DiscordMember host) {
     // guard
@@ -107,10 +116,13 @@ public class MainGameModule : BaseCommandModule {
       .AddComponents(createButtons(host.Id, player.Id));
   }
 
-  // todo: make sure users with leftover buttons don't mess up the game
+  /** <summary>
+    Handles interaction events such as pressing a button.
+  </summary> */
   public static async Task handleInteraction(
     ComponentInteractionCreateEventArgs args, GameDictionary games
   ) {
+    // parse the id into an object for easier use
     InteractivityIdentifier id; try {
       id = new InteractivityIdentifier(args.Id);
     } catch (System.FormatException) {
@@ -123,11 +135,13 @@ public class MainGameModule : BaseCommandModule {
       return;
     }
 
+    // get game state associated with identifier
     MainGameAdapter? game = games[id.hostId];
     if (game == null) {
       await args.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage);
       await args.Message.DeleteAsync();
-    } else if (id.type != InteractivityIdentifier.Type.RefreshButton) {
+    } else if (id.type != InteractivityIdentifier.Type.RefreshButton) /* "if changing the game state by moving a character" */ {
+      // lock game state to prevent race conditions
       lock (game) {
         game.interact(id.playerId, id.Direction);
       }
@@ -138,10 +152,11 @@ public class MainGameModule : BaseCommandModule {
           .WithContent($"```\n{game.printBoard()}\n```")
           .AddComponents(createButtons(id.hostId, id.playerId))
       );
-    } else {
+    } else /* "otherwise we are reading from the game state by refreshing a window" */ {
       await args.Interaction.CreateResponseAsync(
         InteractionResponseType.UpdateMessage,
         new DiscordInteractionResponseBuilder()
+          // reading from the game doesn't require a lock
           .WithContent($"__{game.ownerName}__\n```{game.printBoard()}```")
           .AddComponents(
             new InteractivityIdentifier(id.hostId, id.hostId, InteractivityIdentifier.Type.RefreshButton)
@@ -151,6 +166,7 @@ public class MainGameModule : BaseCommandModule {
     }
   }
 
+  // helper method for building responses
   private static DiscordComponent[] createButtons(ulong hostId, ulong playerId) {
     var buttons = new DiscordComponent[4];
     buttons[0] = new InteractivityIdentifier(hostId, playerId, InteractivityIdentifier.Type.NorthButton)

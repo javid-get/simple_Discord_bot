@@ -1,5 +1,8 @@
 namespace Games.Main;
 
+/** <summary>
+  Represents an object that lives on the grid.
+</summary> */
 public abstract class Piece {
   public Tile home;
   public Piece(Tile home) { this.home = home; }

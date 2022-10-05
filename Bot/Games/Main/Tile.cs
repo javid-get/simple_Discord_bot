@@ -1,5 +1,8 @@
 namespace Games.Main;
 
+/** <summary>
+  A space on the grid that a piece can occupy.
+</summary> */
 public class Tile {
   private readonly Board owner;
   public readonly int row;

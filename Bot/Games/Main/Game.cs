@@ -1,6 +1,10 @@
 namespace Games.Main;
 using System.Collections.Generic;
 
+/** <summary>
+  This is less of a game and more of a proof of concept.
+  Players of this game can move a character around in a two-dimensional grid.
+</summary> */
 public class Game {
   private List<Piece.PlayerCharacter> playerList;
   private Board board;

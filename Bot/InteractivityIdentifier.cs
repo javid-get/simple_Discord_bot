@@ -9,6 +9,11 @@ using System.Collections.Generic;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 
+
+/** <summary>
+  Interactable components in the Discord UI have identifiers to tell them apart.
+  This class models a indentifer, and helps create components with specific identifiers: buttons in particular.
+</summary> */
 public class InteractivityIdentifier {
   public const char Delimiter = '_';
   public readonly ulong hostId;
